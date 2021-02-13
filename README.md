@@ -104,5 +104,23 @@ Now install is only executed when some node modules really changed.
 
 ![](summary-1.png)
 
+### Managing Images & Containers
+
+`--help` can be added to every docker command.
+
+`docker run ..` starts a NEW container. By default in foreground (STDOUT can be seen).
+With `docker ps -a` we can check for stopped containers and restart it with:
+```
+docker start <id/name>
+```
+By this the container ist started in the background (in opposite to `run`s default mode).  
+`docker run -d ..` with runs the container in the background.  
+`docker attach <id>` can be used to have a running container in the foreground again.  
+`docker logs` can be used to get STDOUT log output in the container. With option `-f`the follow mode can be activated.
+
+
+
+
+
 
 
