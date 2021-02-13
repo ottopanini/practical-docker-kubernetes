@@ -15,7 +15,7 @@ Use a browser and visit: [http://localhost:3000](http://localhost:3000)
 
 ![](image&container1.png) 
 
-![](image&container2.png) 
+![](image&container2.png)  
 Base images can be found at [https://hub.docker.com/](https://hub.docker.com/).
 
 You can find the node image there.
@@ -31,7 +31,7 @@ to create a container by the image.
 
 ### My NodeJS App (nodejs-app)
 Build my own custom image.
-![](a-nodejs-app1.png)
+![](a-nodejs-app1.png)  
 Create a 'Dockerfile' in project directory:
 ```docker
 #-- create image ------
@@ -73,11 +73,11 @@ Now we change something in the served html and call the run command again. But..
 The image must be build again first. `docker build .`
 Start container again... and there it is.
 
-![](a-nodejs-app-2.png)
+![](a-nodejs-app-2.png)  
 
 ### Understanding Image Layers 
 
-![](image-layers-1.png)
+![](image-layers-1.png)  
 
 When an image is rebuild then all steps are reexecuted which are underneath the first step that has changed.
 
@@ -148,5 +148,46 @@ docker image prune
 ```
 You can also start/run a container with `--rm` to have it remove itself completely.
 
+### A Look Behind the Scenes: Inspecting Images
+```
+docker image inspect <id>
+```
+Output: `ContainerConfig` with some `Env` Variables. `Cmd` with the running command. `Os`with the operting system the image is based on. `Layers` with the checksums of all the layers of the container.
+### Copying Files Into & From A Container
+Can be done using:
+```
+docker cp [<container name>:]<srcpath> [<container name>:]<destpath>
+
+docker cp copy-into-container/. boring_vaughan:/test
+```
+### Naming & Tagging Containers and Images
+Naming Containers:
+```
+docker run [--name <name>] <id>
+
+docker run -p 3000:80 -d --rm --name goalsapp ec276
+```
+Tagging images:
+Images are tagged using a *name* and a *tag* specifying a version.  
+![](image-tagging-1.png)  
+In Dockerfile (@see nodejs-app):
+```docker
+FROM <name>[:<tag>]
+...
+
+# example
+FROM node:12
+...
+```
+build tagged image:
+```
+docker build [-t <image name>[:<tag>]]
+
+docker build -t goals:latest .
+```
+If you want to remove all unused images including tagged images you need to run:
+```
+docker image prune -a
+```
 
 
