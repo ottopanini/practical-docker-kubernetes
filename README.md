@@ -29,6 +29,33 @@ to create a container by the image.
 `docker ps` to get all running containers. with `-a` to get all containers including stopped ones.  
 `docker run -it <container>`to get a console inside the running container.
 
-### NodeJS App
+### My NodeJS App (nodejs-app)
 Build my own custom image.
 ![](a-nodejs-app1.png)
+Create a 'Dockerfile' in project directory:
+```docker
+#-- create image ------
+FROM node
+
+WORKDIR /app
+
+# copy everything in current directory to 'app' in container
+COPY . /app
+
+RUN npm install
+
+EXPOSE 80
+#-- image done --------
+
+#-- run command -------
+CMD [ "node", "server.js" ]
+```
+**To start the container:**  
+build the image:
+```cmd
+docker build
+```
+grab the Id at the end und use it with:
+```cmd
+docker run <id>
+```
