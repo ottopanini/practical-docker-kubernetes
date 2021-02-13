@@ -59,3 +59,10 @@ grab the Id at the end und use it with:
 ```cmd
 docker run <id>
 ```
+One step missing. Expose 80 in Dockerfile alone isn't sufficient. A port must be provided at startup:
+```
+docker run -p 3000:80 <id>
+```
+Actually `EXPOSE 80`in the Dockerfile is optional. It just documents that a process in the container will expose this port.
+
+
