@@ -224,4 +224,12 @@ docker pull <dockerid>/<image>[:<tag>]
 
 docker pull mydockerid/node-hello-world:latest
 ```
+## 3: Managing Data & Working with Volumes
+- application data
+    - stored in image
+- temporary app data
+    - stored in container (extra container layer)
+- permanent app data
+    - stored in volumes
 
+### Analyzing a Real App (data-volumes)
