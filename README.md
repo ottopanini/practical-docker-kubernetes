@@ -27,7 +27,7 @@ to create a container by the image.
 
 **Useful commands**:  
 `docker ps` to get all running containers. with `-a` to get all containers including stopped ones.  
-`docker run -it <container>`to get a console inside the running container.
+`docker run -it <container>` to get a console inside the running container.
 
 ### My NodeJS App (nodejs-app)
 Build my own custom image.
@@ -57,11 +57,11 @@ docker build
 ```
 grab the Id at the end und use it with:
 ```cmd
-docker run <id>
+docker run <image id>
 ```
 One step missing. Expose 80 in Dockerfile alone isn't sufficient. A port must be provided at startup:
 ```
-docker run -p 3000:80 <id>
+docker run -p 3000:80 <image id>
 ```
 [http://localhost:3000](http://localhost:3000/)
 nothing there...
@@ -121,16 +121,16 @@ By this the container is started in the background (in opposite to `run`s defaul
 ### Entering Interactive Mode (python-app)
 'Atached' doesn't mean we're inside the container and can work init. Let's have it more interactive:
 ```
-docker run -it <id>
+docker run -it <image id>
 ```
 or restart:
 ```
-docker start -a -i <id>
+docker start -a -i <container id>
 ```
 ### Deleting Images & Containers
 Delete container:
 ```
-docker rm <id> [<nextId>]
+docker rm <container id> [<container nextId>]
 ```
 list images:
 ```
@@ -189,5 +189,39 @@ If you want to remove all unused images including tagged images you need to run:
 ```
 docker image prune -a
 ```
+### Sharing Images
+How to provide a reliable & reproducible environment:
+1. We want to have the *exact same environment for development and production* &rarr; This ensures that it works exactly as tested
+2. It should be easy to *share a common development environmment*/setup with new employees and collegues
+3. We *don't want to uninstall and re-install* local dependencies and runtimes all the times
+![](sharing-images-1.png)  
 
+Sharing via:
+![](sharing-images-2.png)  
+
+Sharing via docker hub [https://hub.docker.com](https://hub.docker.com):
+![](share-hub-1.jpg)  
+
+![](share-hub-2.jpg)  
+
+![](share-hub-3.png)  
+
+take the first part: `docker push <dockerid>/<image>`  
+but first name/tag the image accordingly:
+```
+docker tag node-demo:latest mydockerid/node-hello-world:latest
+```
+next:
+```
+docker push mydockerid/node-hello-world
+``` 
+(you must be logged in via `docker login`)
+
+### Pulling & Using Shared Images
+Download/import image:
+```
+docker pull <dockerid>/<image>[:<tag>]
+
+docker pull mydockerid/node-hello-world:latest
+```
 
