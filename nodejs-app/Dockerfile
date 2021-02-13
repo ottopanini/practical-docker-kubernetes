@@ -3,10 +3,11 @@ FROM node
 
 WORKDIR /app
 
-# copy everything in current directory to 'app' in container
-COPY . /app
+COPY package.json /app
 
 RUN npm install
+
+COPY . /app
 
 EXPOSE 80
 #-- image done --------

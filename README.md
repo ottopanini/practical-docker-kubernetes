@@ -66,7 +66,7 @@ docker run -p 3000:80 <id>
 [http://localhost:3000](http://localhost:3000/)
 nothing there...
 
-Actually `EXPOSE 80`in the Dockerfile is optional. It just documents that a process in the container will expose this port.
+Actually `EXPOSE 80` in the Dockerfile is optional. It just documents that a process in the container will expose this port.
 
 Now we change something in the served html and call the run command again. But... the html output in the browser didn't change...
 
@@ -75,10 +75,34 @@ Start container again... and there it is.
 
 ![](a-nodejs-app-2.png)
 
+### Understanding Image Layers 
 
+![](image-layers-1.png)
 
+When an image is rebuild then all steps are reexecuted which are underneath the first step that has changed.
 
+Lets have an improvement of the Dockerfile though:
+```docker
+#-- create image ------
+FROM node
 
+WORKDIR /app
+
+COPY package.json /app
+
+RUN npm install
+
+COPY . /app
+
+EXPOSE 80
+#-- image done --------
+
+#-- run command -------
+CMD [ "node", "server.js" ]
+```
+Now install is only executed when some node modules really changed.
+
+![](summary-1.png)
 
 
 
