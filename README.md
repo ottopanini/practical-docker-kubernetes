@@ -119,8 +119,34 @@ By this the container is started in the background (in opposite to `run`s defaul
 `docker logs <id>` can be used to get STDOUT log output in the container. With option `-f`the follow mode can be activated.
 
 ### Entering Interactive Mode (python-app)
+'Atached' doesn't mean we're inside the container and can work init. Let's have it more interactive:
+```
+docker run -it <id>
+```
+or restart:
+```
+docker start -a -i <id>
+```
+### Deleting Images & Containers
+Delete container:
+```
+docker rm <id> [<nextId>]
+```
+list images:
+```
+docker images 
 
-
+docker image ls
+```
+remove image:
+```
+docker rmi <imageid>
+```
+remove all unused images:
+```
+docker image prune
+```
+You can also start/run a container with `--rm` to have it remove itself completely.
 
 
 
