@@ -63,6 +63,22 @@ One step missing. Expose 80 in Dockerfile alone isn't sufficient. A port must be
 ```
 docker run -p 3000:80 <id>
 ```
+[http://localhost:3000](http://localhost:3000/)
+nothing there...
+
 Actually `EXPOSE 80`in the Dockerfile is optional. It just documents that a process in the container will expose this port.
+
+Now we change something in the served html and call the run command again. But... the html output in the browser didn't change...
+
+The image must be build again first. `docker build .`
+Start container again... and there it is.
+
+![](a-nodejs-app-2.png)
+
+
+
+
+
+
 
 
