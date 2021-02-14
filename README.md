@@ -272,5 +272,19 @@ await fs.copyFile(tempFilePath, finalFilePath);
 await fs.unlink(tempFilePath);
 ...
 ```
+Data is still not going into the right folder...
+Let's check it out.
+```
+docker volume ls
+```
+The first thing we see is, our volume is an **anonymous volume**. By removing our container (by using the --rm tag) the anonymous volume gets lost. **Named volumes** instead survive container removals.
+
+Named volumes can't be created by the Dockerfile. It must be defined with the container startup command:
+```
+docker run ... [-v <volume name>:<volume path in container>]
+
+docker run --name feedback-app -p 3000:80 --rm -d -v feedback:/app/feedback feedback-node:volumes
+```
+
 
 
