@@ -50,6 +50,10 @@ EXPOSE 80
 #-- run command -------
 CMD [ "node", "server.js" ]
 ```
+***
+Always pay attention to the JSON array format for the CMD command parameter! If missing the comma it will throw an error at container runtime startup with
+message: `/bin/sh: 1: [: node: unexpected operator`
+***
 **To start the container:**  
 build the image:
 ```cmd
@@ -233,3 +237,40 @@ docker pull mydockerid/node-hello-world:latest
     - stored in volumes
 
 ### Analyzing a Real App (data-volumes)
+After added a Dockerfile... build the image:
+```
+docker build -t feedback-node .      
+```
+and run it:
+```
+docker run -p 3000:80 -d --name feedback-app --rm feedback-node
+```
+Feedback will be stored as files in the feedback folder (inside the container). But will be lost when container is removed...
+### Introducing volumes
+Volumes are *folders on your host machine* hard drive which are *mounted* ("made available", mapped) *into containers*.
+
+Volumes can be defined in the Dockerfile like:
+```docker
+...
+VOLUME [ "<path inside container>" ]
+...
+#example
+VOLUME [ "/app/feedback" ]
+```
+Another problem is, that used directories in the example mount as different devices. A little change to the code must have been made and keep in mind:
+
+In server.js:
+```js
+...
+await fs.rename(tempFilePath, finalFilePath);
+...
+```
+to move the files from temp folder to feedback filder must be replaced with proper handling:
+```js
+...
+await fs.copyFile(tempFilePath, finalFilePath);
+await fs.unlink(tempFilePath);
+...
+```
+
+
