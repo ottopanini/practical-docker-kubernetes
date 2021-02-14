@@ -342,3 +342,35 @@ FYI: When using **bind mounts** the COPY inside the Dockerfile can be omitted bu
 
 A `.dockerignore` file can be used simillar to .gitignore to specify files or folders to be ommitted by the COPY command.
 
+### Working with Environment Variables & ".env" Files
+![](env-vars-1.png)
+
+In server.js of the "data-volumes" Project. we like to have the port more flexible. Instead:
+```javascript
+...
+app.listen(80);
+
+// we use now
+app.listen(process.env.PORT);
+```
+With a little change in the dockerfile, the env var can be provided:
+```docker
+...
+ENV PORT 80
+
+# we can also use this var in the Dockerfile 
+EXPOSE $PORT
+...
+```
+
+Now it's also possible to override the env vars on container run:
+```
+docker run --name feedback-app --env PORT=8000 -p 3000:8000 --rm -d -v feedback:/app/feedback -v "/home/cpress/practical-docker-kubernetes/data-volumes:/app:ro" -v /app/temp -v /app/node_modules feedback-node:volumes 
+```
+`--env` can be replaced shorter with just `-e`. Another possible solution is to place a .env file in the project directory and run the container with the `--env-file` option.
+```
+docker run ... --env-file ...
+
+docker run --name feedback-app --env-file -p 3000:8000 --rm -d -v feedback:/app/feedback -v "/home/cpress/practical-docker-kubernetes/data-volumes:/app:ro" -v /app/temp -v /app/node_modules feedback-node:volumes
+```
+
