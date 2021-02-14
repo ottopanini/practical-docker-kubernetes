@@ -29,7 +29,7 @@ to create a container by the image.
 `docker ps` to get all running containers. with `-a` to get all containers including stopped ones.  
 `docker run -it <container>` to get a console inside the running container.
 
-### My NodeJS App (nodejs-app)
+### My NodeJS App [nodejs-app]
 Build my own custom image.
 ![](a-nodejs-app1.png)  
 Create a 'Dockerfile' in project directory:
@@ -122,7 +122,7 @@ By this the container is started in the background (in opposite to `run`s defaul
 `docker attach <id>` can be used to have a running container in the foreground again.  
 `docker logs <id>` can be used to get STDOUT log output in the container. With option `-f`the follow mode can be activated.
 
-### Entering Interactive Mode (python-app)
+### Entering Interactive Mode [python-app]
 'Atached' doesn't mean we're inside the container and can work init. Let's have it more interactive:
 ```
 docker run -it <image id>
@@ -236,7 +236,7 @@ docker pull mydockerid/node-hello-world:latest
 - permanent app data
     - stored in volumes
 
-### Analyzing a Real App (data-volumes)
+### Analyzing a Real App [data-volumes]
 After added a Dockerfile... build the image:
 ```
 docker build -t feedback-node .      
@@ -394,3 +394,9 @@ docker build ... --build-arg <key>=<value> ...
 docker build -t feedback-node:volumes --build-arg DEFAULT_PORT=8000 .
 ```
 ***Advice***: place vars to the latest possible position in the dockerfile.
+
+## Networking: (Cross-)Container Communication
+### Case 1: Container to WWW Communication [networks]
+The example project uses AXIOS to make GET requests against a Star Wars Dummy API of the Web.
+
+
