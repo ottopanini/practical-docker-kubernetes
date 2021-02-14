@@ -395,8 +395,22 @@ docker build -t feedback-node:volumes --build-arg DEFAULT_PORT=8000 .
 ```
 ***Advice***: place vars to the latest possible position in the dockerfile.
 
-## Networking: (Cross-)Container Communication
-### Case 1: Container to WWW Communication [networks]
+## Networking: (Cross-)Container Communication [networks]
+![](networks-1.png)
+### Case 1: Container to WWW Communication
 The example project uses AXIOS to make GET requests against a Star Wars Dummy API of the Web.
+### Case 2: Container to Local Host Machine Communication
+The example project uses mongoDB which runs on the host machine to store persistent data.
+`localhost` usage in project code should be replaced with `host.docker.internal` to maked this work.
+### Case 3: Container to Container Communication
+The example project also talks to a SQL Database in another container.
+***
+Advice: A container should just do ***ONE*** main thing.
+***
+Running the example:
+```
+docker build -t favorite-node .
 
+docker run --name favorites -d --rm -p 3000:3000 favorite-node
+ ```
 
