@@ -373,4 +373,24 @@ docker run ... --env-file ...
 
 docker run --name feedback-app --env-file -p 3000:8000 --rm -d -v feedback:/app/feedback -v "/home/cpress/practical-docker-kubernetes/data-volumes:/app:ro" -v /app/temp -v /app/node_modules feedback-node:volumes
 ```
+### Using Build Arguments (ARG)
+With the `ARG` keyword, we can set args available in the dockerfile for image build time. 
+```docker
+...
+ARG <property>=<value>
 
+ARG DEFAULT_PORT=80
+
+# and use it like
+ENV PORT $DEFAULT_PORT
+...
+``` 
+(not usable in `CMD`)
+
+To use a different port we can also override this value with build option:
+```
+docker build ... --build-arg <key>=<value> ...
+
+docker build -t feedback-node:volumes --build-arg DEFAULT_PORT=8000 .
+```
+***Advice***: place vars to the latest possible position in the dockerfile.
