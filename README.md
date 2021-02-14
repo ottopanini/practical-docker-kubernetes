@@ -428,5 +428,19 @@ docker run --name favorites -d --rm -p 3000:3000 favorite-node
 
 The better way then inspecting for the ip of another container would be to create a container network.
 
+### Introducing Docker Networks: Elegant Container to Container Communication
+First create the network:
+```
+docker network create favorites-net
+```
+and with the existing network:
+```
+docker run -d --name mongodb --network favorites-net mongo
+```
+we can mongoDB let can use it.
 
-
+`docker network ls` lists all defined networks.  
+In the implementation of the app you can now use just the name of the container as host address. The last thing needed is to put the container into the same network:
+```
+docker run --name favorites --network favorites-net -d --rm -p 3000:3000 favorite-node
+```
