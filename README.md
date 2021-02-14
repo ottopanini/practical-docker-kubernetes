@@ -313,4 +313,32 @@ docker run --name feedback-app -p 3000:80 --rm -v feedback:/app/feedback -v "/ho
 
 On Windows with docker on WSL be shure, the folders trying to mount are inside the WSL file system **hints:**[WSL2 PDF](https://att-b.udemycdn.com/2020-11-06_09-26-40-a5b3131a849aa7ea0ad3dc1a26de5da3/original.pdf?secure=5KKxaoyUuq-rVSkRe0vYbg==,1613322384&filename=windows-wsl2-file-events.pdf)
 
-**Bind Mounts** can be shared between containers.
+**Bind Mounts** can be shared between containers. 
+
+### A Look at Read-Only Volumes
+
+Files should only be changed in one direction by the code sharing **bind mount** - from outside the container into the container.
+```
+docker run --name feedback-app -p 3000:80 --rm -d -v feedback:/app/feedback -v "/home/cpress/practical-docker-kubernetes/data-volumes:/app:ro" -v /app/temp -v /app/node_modules feedback-node:volumes
+```
+We just added the `:ro` to make clear the volume isn't changed from inside out. Therefore the `-v /app/temp` must be specified for the *data-volumes* project though, so that it can write into that folder *inside* the container. 
+
+### Managing Docker Volumes
+**Bind mounts** are not managed by docker. `docker volume ls` will not show it.
+With 
+```
+docker volume create <volume name>
+
+docker volume create feedback-files
+
+```
+you can create a named volume by hand.
+
+`docker volume inspect <volume>` shows volume specific info.   
+`docker volume rm <volume-id/-name>` can be used to remove a volume.  
+`docker volume prune` removes unused volumes.
+
+FYI: When using **bind mounts** the COPY inside the Dockerfile can be omitted but be aware the image definition might be used in production and then the container won't get started with the code sharing **bind mounts**.
+
+A `.dockerignore` file can be used simillar to .gitignore to specify files or folders to be ommitted by the COPY command.
+
