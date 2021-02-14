@@ -277,14 +277,40 @@ Let's check it out.
 ```
 docker volume ls
 ```
-The first thing we see is, our volume is an **anonymous volume**. By removing our container (by using the --rm tag) the anonymous volume gets lost. **Named volumes** instead survive container removals.
+The first thing we see is, our volume is an **anonymous volume**. By removing our container (when using the --rm tag) the anonymous volume gets lost. **Named volumes** instead survive container removals (of --rm runs).
 
-Named volumes can't be created by the Dockerfile. It must be defined with the container startup command:
+**Named volumes** can't be created by the Dockerfile. It must be defined with the container startup command:
 ```
 docker run ... [-v <volume name>:<volume path in container>]
 
 docker run --name feedback-app -p 3000:80 --rm -d -v feedback:/app/feedback feedback-node:volumes
 ```
+**Named volumes** are great to store persistent data which must not edited directly (from outside the container). **Named Volumes** can also be shared between containers.
 
+### Getting Started With Bind Mounts (Code Sharing)
 
+Here the path on the host can be specified.
+```
+docker run ... [-v <absolute path to folder>:<path inside container>]
 
+docker run --name feedback-app -p 3000:80 --rm -d -v feedback:/app/feedback -v "/home/cpress/practical-docker-kubernetes/data-volumes:/app" feedback-node:volumes
+```
+By this make shure the specified folder is accessible by docker. In Docker Desktop this can be achieved via Settings &rarr; Resources &rarr; File Sharing (if this setting isn't available you are on a windows machine using the wsl integration of docker desktop and therefore this isn't needed anyway).
+
+![](bind-mounts-1.png)
+
+Using Docker Toolbox: [https://headsigned.com/posts/mounting-docker-volumes-with-docker-toolbox-for-windows/](https://headsigned.com/posts/mounting-docker-volumes-with-docker-toolbox-for-windows/)
+
+If you don't always want to copy and use the full path, you can use these OS dependant shortcuts:
+macOS / Linux: `-v $(pwd):/app`    
+Windows: `-v "%cd%":/app`
+
+Attention: make shure that for code sharing the WORKDIR isn't overridden by container creation (the npm install in the data-volumes is for now overridden by the later mount bind). This can be prevented by using an anonymous volume:
+```
+docker run --name feedback-app -p 3000:80 --rm -v feedback:/app/feedback -v "/home/cpress/practical-docker-kubernetes/data-volumes:/app" -v /app/node_modules feedback-node:volumes
+```
+(node_modules dosn't get overridden here bacause docker has a rule that for volume mounts the more specific path wins)
+
+On Windows with docker on WSL be shure, the folders trying to mount are inside the WSL file system **hints:**[WSL2 PDF](https://att-b.udemycdn.com/2020-11-06_09-26-40-a5b3131a849aa7ea0ad3dc1a26de5da3/original.pdf?secure=5KKxaoyUuq-rVSkRe0vYbg==,1613322384&filename=windows-wsl2-file-events.pdf)
+
+**Bind Mounts** can be shared between containers.
