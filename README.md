@@ -398,7 +398,7 @@ docker build -t feedback-node:volumes --build-arg DEFAULT_PORT=8000 .
 ## Networking: (Cross-)Container Communication [networks]
 ![](networks-1.png)
 ### Case 1: Container to WWW Communication
-The example project uses AXIOS to make GET requests against a Star Wars Dummy API of the Web.
+The example project uses AXIOS to make GET requests against a Star Wars Dummy API of the Web. This works out of the box.
 ### Case 2: Container to Local Host Machine Communication
 The example project uses mongoDB which runs on the host machine to store persistent data.
 `localhost` usage in project code should be replaced with `host.docker.internal` to maked this work.
@@ -408,9 +408,25 @@ The example project also talks to a SQL Database in another container.
 Advice: A container should just do ***ONE*** main thing.
 ***
 Running the example:
+build the image:
 ```
 docker build -t favorite-node .
-
+```
+And start mongodb:
+```
+docker run -d --name mongodb mongo
+```
+Then you can inspect the running container with 
+```
+docker container inspect mongodb | grep IPAddress
+```
+to get the ip-address for use in the mongoose.connect statement
+and after all start the container:
+```
 docker run --name favorites -d --rm -p 3000:3000 favorite-node
- ```
+```
+
+The better way then inspecting for the ip of another container would be to create a container network.
+
+
 
