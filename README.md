@@ -444,3 +444,5 @@ In the implementation of the app you can now use just the name of the container 
 ```
 docker run --name favorites --network favorites-net -d --rm -p 3000:3000 favorite-node
 ```
+*Info*: in container networks it isn't needed to expose ports via Dockerfile.
+
