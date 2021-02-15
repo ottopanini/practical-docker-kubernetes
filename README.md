@@ -447,7 +447,7 @@ docker run --name favorites --network favorites-net -d --rm -p 3000:3000 favorit
 *Info*: in container networks it isn't needed to expose ports via Dockerfile.
 
 ## Building Multi-Container Applications with Docker [multi]
-### The App
+### The Multi Demo App
 Backend is talking to Mongo DB and provides an API to the Frontend React SPA. The purpose of the App is to manage goals.
 
 - Database
@@ -462,4 +462,23 @@ Backend is talking to Mongo DB and provides an API to the Frontend React SPA. Th
     - REACT single page application (SPA)
     - Live source code update
 
+start the db:
+```
+docker run --name mongodb -p 27017:27017 --rm -d mongo
+```
+For now the BE could be build and run with `node app.js` but e want it dockerized. To build the image create the Dockerfile:
+```docker
+FROM node
 
+WORKDIR /app
+
+COPY package.json .
+
+RUN npm install
+
+EXPOSE 80
+
+COPY . .
+
+CMD ["node", "app.js"]
+```
