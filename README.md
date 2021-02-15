@@ -482,3 +482,36 @@ COPY . .
 
 CMD ["node", "app.js"]
 ```
+... and build the image with:
+```
+docker build -t goals-node backend 
+```
+and run it
+```
+docker run --name goals-backend --rm -d -p 80:80 goals-node
+```
+The Frontend has a similar Dockerfile:
+```
+FROM node
+
+WORKDIR /app
+
+COPY package.json .
+
+RUN npm install
+
+COPY . .
+
+EXPOSE 3000
+
+CMD ["npm", "start"]
+```
+build it:
+```
+docker build -t goals-react frontend
+```
+and run it
+```
+docker run --name goals-frontend  -p 3000:3000 --rm -it goals-react
+```
+`-it` is needed because the npm start only works this way (for now).
