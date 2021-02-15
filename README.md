@@ -515,3 +515,22 @@ and run it
 docker run --name goals-frontend  -p 3000:3000 --rm -it goals-react
 ```
 `-it` is needed because the npm start only works this way (for now).
+
+### Adding Docker Networks for Efficient Cross-Container Communication
+Create a network:
+```
+docker network create goals-net
+``` 
+Run mongo db in the created network:
+```
+docker run --name mongodb --network goals-net --rm -d mongo
+```
+Build and run the Backend (@see also the code changes in app.js):
+```
+docker build -t goals-node backend
+docker run --name goals-backend -d --rm --network goals-net -p 80:80 goals-node
+```
+Hint: The Appp.js of the frontend doesn't need any change, because it's a web application and is executed inside the browser - not the container. The container is only used in this case to serve the web page.
+
+
+
