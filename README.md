@@ -446,3 +446,20 @@ docker run --name favorites --network favorites-net -d --rm -p 3000:3000 favorit
 ```
 *Info*: in container networks it isn't needed to expose ports via Dockerfile.
 
+## Building Multi-Container Applications with Docker [multi]
+### The App
+Backend is talking to Mongo DB and provides an API to the Frontend React SPA. The purpose of the App is to manage goals.
+
+- Database
+    - Mongo DB
+    - Data must persist
+    - Access should be limited
+- Backend
+    - NodeJS REST API
+    - Data must persist
+    - Live source code update
+- Frontend
+    - REACT single page application (SPA)
+    - Live source code update
+
+
