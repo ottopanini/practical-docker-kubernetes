@@ -532,5 +532,12 @@ docker run --name goals-backend -d --rm --network goals-net -p 80:80 goals-node
 ```
 Hint: The Appp.js of the frontend doesn't need any change, because it's a web application and is executed inside the browser - not the container. The container is only used in this case to serve the web page.
 
+###  Adding Data Persistence to MongoDB with Volumes
+Add a volume to mongo db:
+```
+docker run --name mongodb --network goals-net --rm -d -v data:/data/db mongo
+```
+
+
 
 
