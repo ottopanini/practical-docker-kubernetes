@@ -5,8 +5,8 @@ services:
     name: 'mongodb'
     network: 'goals-net'
     environment: 
-      MONGO_INITDB_ROOT_USERNAME: max 
-      MONGO_INITDB_ROOT_PASSWORD: secret 
+      - MONGO_INITDB_ROOT_USERNAME=max 
+      - MONGO_INITDB_ROOT_PASSWORD=secret 
     volumes: 
       - data:/data/db
   backend:
