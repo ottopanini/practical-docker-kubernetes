@@ -701,7 +701,45 @@ FYI: Container names can be set in the docker-compose file with:
   container_name: mongodb
 ...
 ```
+## Working with "Utility Containers" & Executing Commands In Containers
+![](utility-containers-1.png)
 
 
+```
+docker run -it node
+```
+can be used to start a node container.
+```
+docker run -it -d node
+```
+starts it in detached mode but waiting for commands. Now we can pass commands via:
+```
+docker exec -it <container id> npm init
+```
+this creates a node project inside the container.   
 
+To execute commands directly you can run it with: 
+```
+docker run -it <image-id> [<commands to run after container start>]*
+
+docker run -it node npm init
+```
+The commands replace the commands in the Dockerfile in the `CMD` section.
+
+### Building a First Utility Container [utility]
+The Dockerfile used here doesn't provide any CMD so that a user can run any command against the container.
+```docker
+FROM node:14-alpine 
+
+WORKDIR /app
+```
+Notice we are using an extra lightweight image here. The we build the image with:
+```
+docker build -t node-util .
+```
+Now with:
+```
+docker run -it -v ~/practical-docker-kubernetes/utility:/app node-util npm init
+```
+a node project in the specified folder of the volume can be created.
 
