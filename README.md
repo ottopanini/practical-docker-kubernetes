@@ -572,9 +572,11 @@ And use environment variables (see also the Dockerfile):
 ```
 docker run --name goals-backend -v logs:/app/logs -v ~/practical-docker-kubernetes/multi/backend:/app -v /app/node_modules -e MONGODB_USERNAME=max -d --rm --network goals-net -p 80:80 goals-node
 ```
-
-
-
+### Live Source Code Updates for the React Container (with Bind Mounts)
+Setup the frontend for reflecting code changes:
+```
+docker run --name goals-frontend -v ~/practical-docker-kubernetes/multi/frontend/src:/app/src -p 3000:3000 --rm -it goals-react
+```
 
 
 
