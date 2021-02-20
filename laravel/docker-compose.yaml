@@ -6,8 +6,13 @@ services:
       - '8000:80'
     volumes:
       - ./nginx/nginx.comf:/etc/nginx/nginx.conf
-
-#  php:
+  php:
+    build: 
+      context: ./dockerfiles
+      dockerfile: php.dockerfile
+    volumes:
+      - ./src:/var/www/html:delegated
+      
 #  mysql:
 #  composer:
 #  artisan:

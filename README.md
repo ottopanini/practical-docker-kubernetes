@@ -785,4 +785,26 @@ The target setup:
       - ./nginx/nginx.comf:/etc/nginx/nginx.conf
 ...
 ```
+### Adding a PHP Container
+Here we need a Dockerfile for the specific setup. We use a folder 'dockerfiles' to store needed Dockerfile image definitions. To seperate the Dcokerfiles of the different services we prefix their names with their service name. To use these files in the docker-compose file it can be specified with:
+```
+    build: 
+      context: ./dockerfiles
+      dockerfile: <service-name>.dockerfile
 
+    build: 
+      context: ./dockerfiles
+      dockerfile: php.dockerfile
+    
+```
+For the bind mount volume we use a sepcial mechanism `delegated` which is a performance optimization for the reflection process of changes.
+```
+...
+  php:
+    build: 
+      context: ./dockerfiles
+      dockerfile: php.dockerfile
+    volumes:
+      - ./src:/var/www/html:delegated
+...
+```
