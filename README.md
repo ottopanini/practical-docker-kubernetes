@@ -566,6 +566,7 @@ The node_modules folder inside the container created by image build should not b
 ```
 docker run --name goals-backend -v logs:/app/logs -v ~/practical-docker-kubernetes/multi/backend:/app -v /app/node_modules -d --rm --network goals-net -p 80:80 goals-node
 ```
+And finally add nodemon change detection to have the running container application detect and reflect changes in the source code.
 
 
 

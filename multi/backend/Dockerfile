@@ -10,4 +10,4 @@ EXPOSE 80
 
 COPY . .
 
-CMD ["node", "app.js"]
+CMD ["npm", "start"]
