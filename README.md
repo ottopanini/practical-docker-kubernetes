@@ -577,7 +577,9 @@ Setup the frontend for reflecting code changes:
 ```
 docker run --name goals-frontend -v ~/practical-docker-kubernetes/multi/frontend/src:/app/src -p 3000:3000 --rm -it goals-react
 ```
+## Docker Compose: Elegant Multi-Container Orchestration
+Docker compose is Docker build and run commands combined in a configuration file to start/stop a whole setup with just ***ONE*** command.
 
-
+### Creating a Compose File
 
 
