@@ -752,5 +752,21 @@ Just build the container again with `docker build -t mynpm .` and then any npm c
 ```
 docker run -it -v ~/practical-docker-kubernetes/utility:/app mynpm init
 ```
-
+### Using Docker Compose
+Now we add a docker-compose.yaml
+```
+version: "3.8"
+services:
+  npm:
+    build: ./
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./:/app
+```
+and start it via 
+```
+docker-compose run npm init 
+```
+here the `--rm` option can be used to have the containers removed after the run command is executed.
 
