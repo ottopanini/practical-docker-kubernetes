@@ -568,7 +568,10 @@ docker run --name goals-backend -v logs:/app/logs -v ~/practical-docker-kubernet
 ```
 And finally add nodemon change detection to have the running container application detect and reflect changes in the source code.
 
-
+And use environment variables (see also the Dockerfile):
+```
+docker run --name goals-backend -v logs:/app/logs -v ~/practical-docker-kubernetes/multi/backend:/app -v /app/node_modules -e MONGODB_USERNAME=max -d --rm --network goals-net -p 80:80 goals-node
+```
 
 
 
