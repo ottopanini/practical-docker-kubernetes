@@ -808,3 +808,12 @@ For the bind mount volume we use a sepcial mechanism `delegated` which is a perf
       - ./src:/var/www/html:delegated
 ...
 ```
+### Adding a MySQL Container
+```
+...
+  mysql:
+    image: mysql:5.7
+    env_file: 
+      - ./env/mysql.env
+...
+```
