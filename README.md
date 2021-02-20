@@ -580,6 +580,13 @@ docker run --name goals-frontend -v ~/practical-docker-kubernetes/multi/frontend
 ## Docker Compose: Elegant Multi-Container Orchestration
 Docker compose is Docker build and run commands combined in a configuration file to start/stop a whole setup with just ***ONE*** command.
 
+Things needed to configure:
+- Services (containers)
+    - published Ports
+    - volumes
+    - networks
+    - Environment Variables
+
 ### Creating a Compose File
 
-
+`services` needs at least one child element. `network` isn't needed here because docker-compose creates a network out of the box fpr all services within one docker-compose file.

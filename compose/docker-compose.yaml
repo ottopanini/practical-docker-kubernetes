@@ -3,10 +3,12 @@ services:
   mongodb:
     image: 'mongo'
     name: 'mongodb'
-    network: 'goals-net'
     env_file: 
       - ./env/mongo.env
     volumes: 
       - data:/data/db
   backend:
   frontend:
+
+volumes:
+  data:
