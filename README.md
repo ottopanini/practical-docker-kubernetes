@@ -770,3 +770,19 @@ docker-compose run npm init
 ```
 here the `--rm` option can be used to have the containers removed after the run command is executed.
 
+## A More Complex Setup: A Laravel & PHP Dockerized Project [laravel]
+The target setup:
+![](laravel-1.png)
+
+###  Adding a Nginx (Web Server) Container
+```
+...
+  server:
+    image: 'nginx:stable-alpine'
+    ports:
+      - '8000:80'
+    volumes:
+      - ./nginx/nginx.comf:/etc/nginx/nginx.conf
+...
+```
+
