@@ -537,6 +537,40 @@ Add a volume to mongo db:
 ```
 docker run --name mongodb --network goals-net --rm -d -v data:/data/db mongo
 ```
+and add security to it:
+```
+docker run --name mongodb --network goals-net -e MONGO_INITDB_ROOT_USERNAME=max -e MONGO_INITDB_ROOT_PASSWORD=secret --rm -d -v data:/data/db mongo
+```
+![](multi-1.png)
+
+Now the Backend must talk using credentials to the mongodb database. In app.js add the credentials to the connect statement:
+```javascript
+...
+mongoose.connect(
+  'mongodb://max:secret@mongodb:27017/course-goals?authSource=admin',
+  {
+...
+```
+Rebuild the backend and start it again and everything should work fine again.
+
+### Volumes, Bind Mounts & Polishing for the NodeJS Container
+bind volume for logs:
+```
+docker run --name goals-backend -v logs:/app/logs -d --rm --network goals-net -p 80:80 goals-node
+```
+and a bind mount to have any changes be reflected into the container:
+```
+docker run --name goals-backend -v logs:/app/logs -v ~/practical-docker-kubernetes/multi/backend:/app -d --rm --network goals-net -p 80:80 goals-node
+```
+The node_modules folder inside the container created by image build should not be overriden by the non-existing folder of the mounted (bind mount) source directory:
+```
+docker run --name goals-backend -v logs:/app/logs -v ~/practical-docker-kubernetes/multi/backend:/app -v /app/node_modules -d --rm --network goals-net -p 80:80 goals-node
+```
+
+
+
+
+
 
 
 
