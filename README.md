@@ -743,3 +743,14 @@ docker run -it -v ~/practical-docker-kubernetes/utility:/app node-util npm init
 ```
 a node project in the specified folder of the volume can be created.
 
+We can define an entry point in the Dockerfile to shrink or specify kind of a base command the commands for running the container are appended to.
+In the Dockerfile:
+```docker
+ENTRYPOINT [ "npm" ]
+``` 
+Just build the container again with `docker build -t mynpm .` and then any npm command can be executed:
+```
+docker run -it -v ~/practical-docker-kubernetes/utility:/app mynpm init
+```
+
+
