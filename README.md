@@ -589,4 +589,119 @@ Things needed to configure:
 
 ### Creating a Compose File
 
-`services` needs at least one child element. `network` isn't needed here because docker-compose creates a network out of the box fpr all services within one docker-compose file.
+`services` needs at least one child element. `network` isn't needed here because docker-compose creates a network out of the box for all services within one docker-compose file.
+
+and run it...
+```
+dockedr-compose up -d 
+```
+`-d` is for detachted mode.  
+`docker-compose down` stops all containers and deletes them including images. Volumes are ignored. To delete also volumes option `-v` can be used.  
+```docker
+...
+    build: ./backend
+...
+```
+Optionally you can use `dockerfile` to specify the Dockerfile file name if it's not the 'Dockerfile' default. Additionally args can be set if your Dockerfile processes ARGS.
+```docker
+...
+    build: ./backend
+    dockerfile: Dockerfile
+    args:
+        some-arg: 1
+...
+```
+Environment variables can be set via 3 different options. You can simply use key value pairs:
+```docker
+...
+  environment: 
+    MONGO_INITDB_ROOT_USERNAME: max 
+    MONGO_INITDB_ROOT_PASSWORD: secret 
+...
+```
+or as list of variables:
+```docker
+...
+  environment: 
+    - MONGO_INITDB_ROOT_USERNAME=max 
+    - MONGO_INITDB_ROOT_PASSWORD=secret 
+...
+```
+or as own files:
+```docker
+...
+  env_file: 
+    - ./env/mongo.env
+...
+```
+with the env file content:
+```
+MONGO_INITDB_ROOT_USERNAME=max 
+MONGO_INITDB_ROOT_PASSWORD=secret 
+```
+Bind mounts can be created with relative paths for docker-compose.
+```
+...
+    volumes: 
+      - ./backend:/app
+...
+```
+`-it` transformation for docker-compose:
+```docker
+...
+    stdin_open: true
+    tty: true
+...
+``` 
+So the whole configuration for the compose Project should look like:
+```docker
+version: "3.8"
+services: 
+  mongodb:
+    image: 'mongo'
+    name: 'mongodb'
+    env_file: 
+      - ./env/mongo.env
+    volumes: 
+      - data:/data/db
+  backend:
+    build: ./backend
+    ports: 
+      - '80:80'
+    volumes: 
+      - logs:/app/logs
+      - ./backend:/app
+      - /app/node_modules
+    environment: 
+      MONGODB_USERNAME: max
+      MONGODB_PASSWORD: secret
+    depends_on: 
+      - mongodb
+  frontend:
+    build: ./frontend
+    ports: 
+      - '3000:3000'
+    volumes: 
+      - ./frontend/src:/app/src
+    stdin_open: true
+    tty: true
+    depends_on: 
+      - backend
+
+volumes:
+  data:
+  logs:
+```
+`docker-compose up` can be executed with `--build` to enforce docker to build the images.  
+`docker-compose build` can be used to just only build the images.
+
+FYI: Container names can be set in the docker-compose file with: 
+```
+...
+  container_name: mongodb
+...
+```
+
+
+
+

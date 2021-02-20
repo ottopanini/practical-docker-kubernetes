@@ -2,13 +2,34 @@ version: "3.8"
 services: 
   mongodb:
     image: 'mongo'
-    name: 'mongodb'
     env_file: 
       - ./env/mongo.env
     volumes: 
       - data:/data/db
   backend:
+    build: ./backend
+    ports: 
+      - '80:80'
+    volumes: 
+      - logs:/app/logs
+      - ./backend:/app
+      - /app/node_modules
+    environment: 
+      MONGODB_USERNAME: max
+      MONGODB_PASSWORD: secret
+    depends_on: 
+      - mongodb
   frontend:
+    build: ./frontend
+    ports: 
+      - '3000:3000'
+    volumes: 
+      - ./frontend/src:/app/src
+    stdin_open: true
+    tty: true
+    depends_on: 
+      - backend
 
 volumes:
   data:
+  logs:
