@@ -842,3 +842,104 @@ The command to start a creation of the laravel project is then:
 docker-compose run --rm composer create-project --prefer-dist laravel/laravel .
 ``` 
 *FYI*: This runs only the single composer container.
+
+Some changes needs to be done though. This changes the db configuration in laravel to use the containerized MySQL database. In `src/.env` change:
+```
+DB_CONNECTION=mysql
+DB_HOST=mysql
+DB_PORT=3306
+DB_DATABASE=homestead
+DB_USERNAME=homestead
+DB_PASSWORD=secret
+```
+Now after last changes to the nginx configuration
+```
+...
+    volumes:
+      - ./src:/var/www/html
+      - ./nginx/nginx.comf:/etc/nginx/sites-enabled/default.conf:ro
+    depends_on:
+      - php
+      - mysql
+...
+```
+the whole suite can be started.
+```
+docker-compose up -d --build server
+```
+### Adding More Utility Containers
+#### Artisan
+Initializes database with data. The Dockerfile of the php container is reused but with a different entry point here (artisan is a php tool):
+```
+...
+  artisan:
+    build: 
+      context: ./dockerfiles
+      dockerfile: php.dockerfile
+    volumes:
+      - ./src:/var/www/html
+    entrypoint: ["php", "/var/www/html/artisan"]
+...    
+```
+To start data migration we execute: 
+```
+docker-compose run --rm artisan migrate
+```
+#### NPM
+```
+...
+  npm:
+    image: node:14
+    working_dir: /var/www/html
+    entrypoint: ["npm"]
+    volumes:
+      - ./src:/var/www/html
+...
+```
+### The complete docker-compose config
+```
+version: "3.8"
+services:
+  server:
+    image: 'nginx:stable-alpine'
+    ports:
+      - '8000:80'
+    volumes:
+      - ./src:/var/www/html
+      - ./nginx/nginx.comf:/etc/nginx/sites-enabled/default.conf:ro
+    depends_on:
+      - php
+      - mysql
+  php:
+    build: 
+      context: ./dockerfiles
+      dockerfile: php.dockerfile
+    volumes:
+      - ./src:/var/www/html:delegated
+  mysql:
+    image: mysql:5.7
+    env_file: 
+      - ./env/mysql.env
+  composer:
+    build:
+      context: ./dockerfiles
+      dockerfile: composer.dockerfile
+    volumes:
+      - ./src:/var/www/html
+  artisan:
+    build: 
+      context: ./dockerfiles
+      dockerfile: php.dockerfile
+    volumes:
+      - ./src:/var/www/html
+    entrypoint: ["php", "/var/www/html/artisan"]
+  npm:
+    image: node:14
+    working_dir: /var/www/html
+    entrypoint: ["npm"]
+    volumes:
+      - ./src:/var/www/html
+```
+
+
+
