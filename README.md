@@ -857,7 +857,7 @@ Now after last changes to the nginx configuration
 ...
     volumes:
       - ./src:/var/www/html
-      - ./nginx/nginx.comf:/etc/nginx/sites-enabled/default.conf:ro
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
     depends_on:
       - php
       - mysql
@@ -906,7 +906,7 @@ services:
       - '8000:80'
     volumes:
       - ./src:/var/www/html
-      - ./nginx/nginx.comf:/etc/nginx/sites-enabled/default.conf:ro
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
     depends_on:
       - php
       - mysql
