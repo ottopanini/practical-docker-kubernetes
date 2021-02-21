@@ -817,3 +817,23 @@ For the bind mount volume we use a sepcial mechanism `delegated` which is a perf
       - ./env/mysql.env
 ...
 ```
+### Adding a Composer Utility Container
+A Laravel Project can be created ith the composer. We can find a composer docker image at dock hub but needs a little customization:
+```docker
+FROM composer:latest
+
+WORKDIR /var/www/html
+
+ENTRYPOINT [ "composer", "--ignore-platform-reqs" ]
+```
+and the changes in the docker-compose-file are:
+```
+...
+  composer:
+    build:
+      context: ./dockerfiles
+      dockerfile: composer.dockerfile
+    volumes:
+      - ./src:/var/www/html
+...
+``` 
