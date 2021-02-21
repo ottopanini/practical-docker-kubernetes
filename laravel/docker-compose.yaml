@@ -16,8 +16,6 @@ services:
     build: 
       context: .
       dockerfile: dockerfiles/php.dockerfile
-    volumes:
-      - ./src:/var/www/html:delegated
   mysql:
     image: mysql:5.7
     env_file: 
@@ -30,8 +28,8 @@ services:
       - ./src:/var/www/html
   artisan:
     build: 
-      context: ./dockerfiles
-      dockerfile: php.dockerfile
+      context: .
+      dockerfile: dockerfiles/php.dockerfile
     volumes:
       - ./src:/var/www/html
     entrypoint: ["php", "/var/www/html/artisan"]
