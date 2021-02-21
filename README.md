@@ -837,3 +837,8 @@ and the changes in the docker-compose-file are:
       - ./src:/var/www/html
 ...
 ``` 
+The command to start a creation of the laravel project is then:
+```
+docker-compose run --rm composer create-project --prefer-dist laravel/laravel .
+``` 
+*FYI*: This runs only the single composer container.
