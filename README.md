@@ -940,6 +940,22 @@ services:
     volumes:
       - ./src:/var/www/html
 ```
+## Deploying Docker Containers
+- install docker on a remote host machine (SSH)
+- push our docker image to docker registry
+- pull from there to our remote host
+- run the image there
+- expose all needed ports to the WWW
+- testing in browser
 
+Main hosting providers:
+- AWS
+- Azure 
+- Google Cloud
+
+### Getting Started With An Example
+- ***create and launch EC2 instance***, VPC and security group
+- ***Configure security group*** to expose all required ports to WWWW
+- ***Connect*** to instance (SSH), ***install Docker*** and ***run container***
 
 
