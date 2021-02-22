@@ -1002,3 +1002,32 @@ and push it
 ```
 docker push <accountname>/node-example-1
 ```
+
+### Managing & Updating the Container / Image
+Implement changes and then:
+```
+docker build -t node-example-1 .
+docker tag node-example-1 <accountname>/node-example-1
+docker push <accountname>/node-example-1
+```
+On the remote machine stop the running container:
+```
+docker ps
+docker stop <container name>
+```
+and rerun it:
+```
+sudo docker pull <accountname>/node-example-1
+sudo docker run -d -rm -p 80:80 <accountname>/node-example-1
+```
+`docker pull` is needed here to pull the latest version (if the image was downloaded by docker before).
+
+Do-it-yourself Approach - disadvantages
+- responsibility 
+  - security
+  - updates
+  - manage networks, security groups, firewall  
+- SSHing can get annoying
+
+Recommandation: **Managed Services**
+
