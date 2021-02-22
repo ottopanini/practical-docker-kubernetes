@@ -982,3 +982,23 @@ Download and save the keyfile to connect to the remote machine
 &rarr; Then click launch instances  
 &rarr; View Instances   
 
+### Pushing our local Image to the Cloud
+1. Deploy source
+    - build image on remote machine
+    - push source code to remote machine, `run docker build` and then `docker run`
+    - unnecessary complexity
+2. Deploy built image
+    - Build image before deployment (local machine)
+    - just execute `docker run`
+    - avoid unnecessary remote server work
+
+2nd option can be utilized using docker hub.
+
+First build the image as usual. Then give the image the right name:
+```
+docker tag node-example-1 <accountname>/node-example-1
+```
+and push it
+```
+docker push <accountname>/node-example-1
+```
