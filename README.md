@@ -958,4 +958,27 @@ Main hosting providers:
 - ***Configure security group*** to expose all required ports to WWWW
 - ***Connect*** to instance (SSH), ***install Docker*** and ***run container***
 
+### Bind Mounts In Production
+![](deployment-1.png)
+
+### Introducing AWS & EC2
+![](deployment-2.png)
+
+![](deployment-3.png)
+
+![](deployment-4.png)
+
+![](deployment-5.png)
+
+![](deployment-6.png)
+
+![](deployment-7.png)
+
+![](deployment-8.png)
+
+![](deployment-9.png)
+
+Download and save the keyfile to connect to the remote machine  
+&rarr; Then click launch instances  
+&rarr; View Instances   
 
