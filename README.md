@@ -1031,3 +1031,22 @@ Do-it-yourself Approach - disadvantages
 
 Recommandation: **Managed Services**
 
+### From Manual Deployment to Managed Services
+![](deployment-10.png)
+
+#### ECS on AWS
+![](deployment-11.png)
+
+![](deployment-12.png)
+
+Set Port 80
+
+![](deployment-13.png)
+
+![](deployment-14.png)
+
+![](deployment-15.png)
+
+... and ready to go.
+
+![](deployment-16.png)
