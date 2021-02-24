@@ -1050,3 +1050,56 @@ Set Port 80
 ... and ready to go.
 
 ![](deployment-16.png)
+
+### Creating a "build-only" Container
+In some development environments like Angular, there is a difference between development builds and production builds. Development builds often contain serving the results as production only generate the expected Javascript but don't provide any server.
+![](deployment-17.png)
+
+Create a prod Dockerfile.
+```docker
+FROM node:14-alpine
+
+WORKDIR /app
+
+COPY package.json .
+
+RUN npm install
+
+COPY . .
+
+CMD ["npm", "run", "build"]
+```
+This was only the first 'stage'...
+
+### Introducing Multi-Stage Builds
+```docker
+FROM node:14-alpine as build
+
+WORKDIR /app
+
+COPY package.json .
+
+RUN npm install
+
+COPY . .
+
+RUN npm run build
+
+FROM nginx:stable-alpine
+
+WORKDIR /app
+
+COPY --from=build /app/build /usr/share/nginx/html
+
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]
+```
+`--from=<image>` allows us to copy content from a previous `FROM` stage into the current stage.
+
+Build the image with:
+```
+docker build -f Dockerfile.prod .
+```
+`-f` let us specify a specific Dockerfile file name.
+
