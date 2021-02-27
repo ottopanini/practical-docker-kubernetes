@@ -1182,4 +1182,40 @@ and build it:
 ```
 docker build -t kube-first-app .
 ```
+Push it to your docker registry (minikube doesn't know a thing about the images in our local docker desktop).
+```
+docker tag kube-first-app registry/kube-first-app
+docker push registry/kube-first-app
+```
+and use it to create a deployment
+```
+kubectl create deployment first-app --image=<registry/image>
 
+kubectl create deployment first-app --image=registry/kube-first-app
+```
+`kubectl get deployments` lists all *deployments*  
+`kubectl get pods` lists all *pods*
+
+### The "Service" Object (Resource)
+- Pods have an internal IP by default - but it changes when a Pod is replaced   
+&rarr; **Services** group Pods with a shared IP
+- Sercvies can allow external access to Pods
+  - the default (internal only) can be overwritten with a service   
+
+Without **Services**, Pods are very hard to reach and communication is difficult.
+Reaching it from outside the Cluster would be even impossible at all.
+With 
+```
+kubectl expose deployment first-app --type=LoadBalancer --port=8080
+```
+Types:
+- ClusterIP - only reachable inside the cluster
+- NodePort - reachable also outside th cluster
+- LoadBalancer - Layer 4 load balancing 
+
+`kubectl get services` lists all services.   
+With
+```
+minikube service first-app
+```
+minikube can give us an external IP to reach the service.
