@@ -1129,3 +1129,57 @@ by this processing of the dockerfile will stop in the above build script after t
 
 ### A Closer Look at the Master Node
 ![](master-node-1.png)
+
+## Kubernetes in Action - Diving into the Core Concepts
+### Understanding Kubernetes Objects (Resources)
+Kubernetes API Objects:
+- Pods
+- Deployments
+- Services
+- Volumes
+- ...
+
+... can be defined declarativly or imperativly.
+
+#### The Pod
+- contains and runs one or multiple containers
+- contain shared resources (volumes) for *all* pod containers
+- has a cluster-internal IP (`ClusterIP`) by default 
+- containers inside the pod can talk to eah other via `localhost`
+***
+***Important:*** Pods are designed to be ***ephemeral***: Kubernetes will *start*, *stop* and *replace* them as needed.
+***
+For *Pods* to be managed for you, you need a "Controller" (e.g. a "Deployment")
+
+#### The Deployment
+- a **Deployment** *controls* (multiple) *Pods*
+  - the desired state is defined and Kubernetes changes the actual state to follow
+  - define which *Pods* and *Containers* to run and *number of instances*
+- **Deployments** can be *paused*, *deleted* and *rolled back*
+- **Deployments** can be *scaled dynamically* (and *automatically*)
+  - change number of desired Pods as needed
+- *multiple* **Deployments** can be managed
+- typically Pods aren't controlled directly, instead Deployments are used to set up the desired state.
+
+### A First Deployment - Using the Imperative Approach [kube-action]
+We still need to use the images:
+```docker
+FROM node:14-alpine
+
+WORKDIR /app
+
+COPY package.json .
+
+RUN npm install
+
+COPY . .
+
+EXPOSE 8080
+
+CMD [ "node", "app.js" ]
+```  
+and build it:
+```
+docker build -t kube-first-app .
+```
+
