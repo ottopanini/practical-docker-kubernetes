@@ -1101,5 +1101,31 @@ Build the image with:
 ```
 docker build -f Dockerfile.prod .
 ```
-`-f` let us specify a specific Dockerfile file name.
+`-f` let us specify a specific Dockerfile file name (with relative path). The context `.` is needed also this way.
 
+It is also possible to just only build a container up until a specific stage
+```
+docker build [--target <stage name>]
+
+docker build --target build -f Dockerfile.prod .
+```
+by this processing of the dockerfile will stop in the above build script after the `RUN npm run build`
+
+# Kubernetes
+## Getting Started with Kubernetes
+### Core Concepts
+![](k8s-core-concepts-1.png)
+
+***Cluster***: A set of *Node* machines which are running *containerized* Application (*Worker Nodes*) or control other nodes (*Master Node*).  
+***Nodes***: *Physical or virtual machine* with a certain hardware capacity with hosts *one or multiple Pods* and *communicates* with the Cluster.  
+  ***Master Node***: Cluster *Control Plane*, *managing the Pods* across Worker Nodes
+  ***Worker Node***: Hosts Pods, *running App containers* (+ *resources*)   
+***Pods***: ... *hold the actual running App Containers* + their *required resources* (e.g. volumes).   
+***Containers***: Normal (Docker) Containers  
+***Services***: A *logical set (group) of Pods* with a unique, Pod- and Container-*independent IP address*
+
+### A Closer Look at the Worker Nodes
+![](worker-node-1.png)
+
+### A Closer Look at the Master Node
+![](master-node-1.png)
