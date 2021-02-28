@@ -1258,4 +1258,26 @@ The Status of the updating can then be get by:
 kubectl rollout status deployment first-app
 ``` 
 
+### Deployment Rollbacks & History
+Deploying a non existing verion with `kubectl set image deployment first-app kube-first-app=<repo name>/kube-first-app:3` causes an error:
+![](err-img-pull-1.png)
 
+To Undo the last change just:
+```
+kubectl rollout undo deployment <deployment name> [--to-revision=<revNr>]
+
+kubectl rollout undo deployment first-app
+```
+It is possible to get even to a state longer back in time. To get the history of a deployment you can usse:
+```
+kubectl rollout history deployment <deployment name> [--revision=<revNr>]
+
+kubectl rollout history deployment first-app
+kubectl rollout history deployment first-app --revision=3
+```
+
+### Clean up 
+```
+kubectl delete service first-app
+kubectl delete deployment first-app
+```
