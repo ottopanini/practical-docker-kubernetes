@@ -1379,3 +1379,24 @@ matchExpressions:
   - {key: app, operator: In, values: [second-app, first-app]}
 ...
 ```
+Operators can be: `In`, `NotIn`    
+Selectors can also be used for the imperative approach via the CLI.
+```
+kubectl delete deployments,services -l group=example
+```
+
+### Liveness Probes
+In deployment configs add for the containers node:
+```yaml
+...
+      containers:
+      ...
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 8080
+          periodSeconds: 10
+          initialDelaySeconds: 5  
+...
+```
+`path: /` is the default though.
