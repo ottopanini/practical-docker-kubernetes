@@ -1281,3 +1281,31 @@ kubectl rollout history deployment first-app --revision=3
 kubectl delete service first-app
 kubectl delete deployment first-app
 ```
+
+### Creating a Deployment Configuration File (Declarative Approach)
+Deployment configs can be specified in a file:
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: second-app-deployment
+spec:
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: second-app
+    spec:
+      containers:
+      - name: second-node
+        image: christianpress/kube-first-app:2
+
+```
+and applied by:
+```
+kubectl apply -f <config yaml path>
+
+k apply -f deployment.yaml
+```
+(this is comparable to docker-compose)
+
