@@ -597,13 +597,13 @@ dockedr-compose up -d
 ```
 `-d` is for detachted mode.  
 `docker-compose down` stops all containers and deletes them including images. Volumes are ignored. To delete also volumes option `-v` can be used.  
-```docker
+```yaml
 ...
     build: ./backend
 ...
 ```
 Optionally you can use `dockerfile` to specify the Dockerfile file name if it's not the 'Dockerfile' default. Additionally args can be set if your Dockerfile processes ARGS.
-```docker
+```yaml
 ...
     build: ./backend
     dockerfile: Dockerfile
@@ -612,7 +612,7 @@ Optionally you can use `dockerfile` to specify the Dockerfile file name if it's 
 ...
 ```
 Environment variables can be set via 3 different options. You can simply use key value pairs:
-```docker
+```yaml
 ...
   environment: 
     MONGO_INITDB_ROOT_USERNAME: max 
@@ -620,7 +620,7 @@ Environment variables can be set via 3 different options. You can simply use key
 ...
 ```
 or as list of variables:
-```docker
+```yaml
 ...
   environment: 
     - MONGO_INITDB_ROOT_USERNAME=max 
@@ -628,7 +628,7 @@ or as list of variables:
 ...
 ```
 or as own files:
-```docker
+```yaml
 ...
   env_file: 
     - ./env/mongo.env
@@ -640,21 +640,21 @@ MONGO_INITDB_ROOT_USERNAME=max
 MONGO_INITDB_ROOT_PASSWORD=secret 
 ```
 Bind mounts can be created with relative paths for docker-compose.
-```
+```yaml
 ...
     volumes: 
       - ./backend:/app
 ...
 ```
 `-it` transformation for docker-compose:
-```docker
+```yaml
 ...
     stdin_open: true
     tty: true
 ...
 ``` 
 So the whole configuration for the compose Project should look like:
-```docker
+```yaml
 version: "3.8"
 services: 
   mongodb:
@@ -696,7 +696,7 @@ volumes:
 `docker-compose build` can be used to just only build the images.
 
 FYI: Container names can be set in the docker-compose file with: 
-```
+```yaml
 ...
   container_name: mongodb
 ...
@@ -754,7 +754,7 @@ docker run -it -v ~/practical-docker-kubernetes/utility:/app mynpm init
 ```
 ### Using Docker Compose
 Now we add a docker-compose.yaml
-```
+```yaml
 version: "3.8"
 services:
   npm:
@@ -775,7 +775,7 @@ The target setup:
 ![](laravel-1.png)
 
 ###  Adding a Nginx (Web Server) Container
-```
+```yaml
 ...
   server:
     image: 'nginx:stable-alpine'
@@ -787,7 +787,7 @@ The target setup:
 ```
 ### Adding a PHP Container
 Here we need a Dockerfile for the specific setup. We use a folder 'dockerfiles' to store needed Dockerfile image definitions. To seperate the Dcokerfiles of the different services we prefix their names with their service name. To use these files in the docker-compose file it can be specified with:
-```
+```yaml
     build: 
       context: ./dockerfiles
       dockerfile: <service-name>.dockerfile
@@ -798,7 +798,7 @@ Here we need a Dockerfile for the specific setup. We use a folder 'dockerfiles' 
     
 ```
 For the bind mount volume we use a sepcial mechanism `delegated` which is a performance optimization for the reflection process of changes.
-```
+```yaml
 ...
   php:
     build: 
@@ -809,7 +809,7 @@ For the bind mount volume we use a sepcial mechanism `delegated` which is a perf
 ...
 ```
 ### Adding a MySQL Container
-```
+```yaml
 ...
   mysql:
     image: mysql:5.7
@@ -827,7 +827,7 @@ WORKDIR /var/www/html
 ENTRYPOINT [ "composer", "--ignore-platform-reqs" ]
 ```
 and the changes in the docker-compose-file are:
-```
+```yaml
 ...
   composer:
     build:
@@ -853,7 +853,7 @@ DB_USERNAME=homestead
 DB_PASSWORD=secret
 ```
 Now after last changes to the nginx configuration
-```
+```yaml
 ...
     volumes:
       - ./src:/var/www/html
@@ -870,7 +870,7 @@ docker-compose up -d --build server
 ### Adding More Utility Containers
 #### Artisan
 Initializes database with data. The Dockerfile of the php container is reused but with a different entry point here (artisan is a php tool):
-```
+```yaml
 ...
   artisan:
     build: 
@@ -886,7 +886,7 @@ To start data migration we execute:
 docker-compose run --rm artisan migrate
 ```
 #### NPM
-```
+```yaml
 ...
   npm:
     image: node:14
@@ -897,7 +897,7 @@ docker-compose run --rm artisan migrate
 ...
 ```
 ### The complete docker-compose config
-```
+```yaml
 version: "3.8"
 services:
   server:
