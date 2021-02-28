@@ -1309,3 +1309,27 @@ k apply -f deployment.yaml
 ```
 (this is comparable to docker-compose)
 
+### Creating a Service Declaratively
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend
+spec:
+  selector:
+    app: second-app
+    tier: backend
+  ports:
+  - protocol: 'TCP'
+    port: 80
+    targetPort: 8080
+  type: LoadBalancer
+```
+and deploy the service `kubectl apply -f service.yaml`   
+It is possible to simply change a yaml and apply it again using `kubectl apply -f <config yaml>`  
+To remove the resources related to a config yaml use:
+```
+kubectl delete -f <config yaml>
+```
+
+
