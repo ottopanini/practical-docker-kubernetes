@@ -1331,5 +1331,51 @@ To remove the resources related to a config yaml use:
 ```
 kubectl delete -f <config yaml>
 ```
+It is also possible to put several configs in one file. Therefore they must be delimited by `---`. 
+***
+It is considered best practise if a service and a deployment is merged to start with the service first.
+*** 
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend
+spec:
+  selector:
+    app: second-app
+    tier: backend
+  ports:
+  - protocol: 'TCP'
+    port: 80
+    targetPort: 8080
+  type: LoadBalancer
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: second-app-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: second-app
+      tier: backend
+  template:
+    metadata:
+      labels:
+        app: second-app
+        tier: backend
+    spec:
+      containers:
+      - name: second-node
+        image: christianpress/kube-first-app:2
+```
 
-
+### More on Labels & Selectors
+Are used to connect Api Objects such as services and deployments. For deployments you can also use `matchExpressions` instead `matchLabels`.
+```yaml
+...
+matchExpressions: 
+  - {key: app, operator: In, values: [second-app, first-app]}
+...
+```
