@@ -1218,4 +1218,44 @@ With
 ```
 minikube service first-app
 ```
-minikube can give us an external IP to reach the service.
+minikube can give us an external IP to reach the service.  
+With `minikube dashboard` the kubernetes dashboard can be opened.
+![](dashboard-1.png)
+
+### Scaling in Action
+```
+kubectl scale deployment <deployment name> --replicas=<replica count>
+
+kubectl scale deployment first-app --replicas=3
+```
+With `watch -n 1 kubectl get pods` the 3 pods can now be observed. Start the minkube service with `minikube service first-app` and just use `curl <minikube service url>` to get the page and `curl <minikube service url>/error` to provoke pod error and restart.
+
+### Updating Deployments
+
+Change some code in our app.js
+```html
+...
+    <h1>Hello from this NodeJS app!!!!!!</h1>
+    <p>This is new!</p>
+...
+```
+Then the image needs to be rebuild with `docker build -t <repo name>/kube-first-app .`, push it to the hub `docker push <repo name>/kube-first-app` and it's ready to update:
+```
+kubectl set image deployment first-app kube-first-app=<repo name>/kube-first-app 
+```
+But wait checking the result with `curl <minikube service url>` there is no change... and this is why:
+***
+The change detection mechanism uses tags to decide the necessity to replace the running pods by newer versions. 
+***
+So lets build the image with a version tag now:
+```
+docker build -t <repo name>/kube-first-app:2 .
+docker push <repo name>/kube-first-app:2
+kubectl set image deployment first-app kube-first-app=<repo name>/kube-first-app:2
+```
+The Status of the updating can then be get by:
+```
+kubectl rollout status deployment first-app
+``` 
+
+
