@@ -1469,5 +1469,33 @@ curl <minikube url>/error
 
 ### A First Volume: The "emptyDir" Type
 EmptyDir creates a volume when the pod starts but survives container restarts.  
-Downsides: Replicas > 1
+Downsides: Replicas > 1 - emptyDirs are bound to the pod.
 
+Add a volumes section under `spec`:
+```yaml
+      volumes:
+        - name: story-volume
+          emptyDir: {}
+```
+and refernce this volume in the container spec:
+```yaml
+...
+      containers:
+        ...
+        volumeMounts:
+          - mountPath: /app/story
+            name: story-volume
+...
+```
+
+### A Second Volume: The "hostPath" Type
+Creates a shared volume on the host file system.
+```yaml
+...
+      volumes:
+        - name: story-volume
+          hostPath:
+            path: /data
+            type: DirectoryOrCreate
+```
+`DirectoryOrCreate` creates the directory if not exists. 

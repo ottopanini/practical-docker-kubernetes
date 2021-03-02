@@ -16,9 +16,11 @@ spec:
       - name: story
         image: christianpress/kube-data-demo:1
         volumeMounts:
-          - mountPath: /app/story
-            name: story-volume
+        - mountPath: /app/story
+          name: story-volume
       volumes:
-        - name: story-volume
-          emptyDir: {}
+      - name: story-volume
+        hostPath:
+          path: /data
+          type: DirectoryOrCreate
              
