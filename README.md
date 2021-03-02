@@ -1375,8 +1375,8 @@ spec:
 Are used to connect Api Objects such as services and deployments. For deployments you can also use `matchExpressions` instead `matchLabels`.
 ```yaml
 ...
-matchExpressions: 
-  - {key: app, operator: In, values: [second-app, first-app]}
+    matchExpressions: 
+      - {key: app, operator: In, values: [second-app, first-app]}
 ...
 ```
 Operators can be: `In`, `NotIn`    
@@ -1390,7 +1390,7 @@ In deployment configs add for the containers node:
 ```yaml
 ...
       containers:
-      ...
+        ...
         livenessProbe:
           httpGet:
             path: /
@@ -1400,3 +1400,51 @@ In deployment configs add for the containers node:
 ...
 ```
 `path: /` is the default though.
+
+## Managing Data & Volumes with Kubernetes [kube-data]
+You can use `docker-compose up -d --build` to build and run the projects image. The project works using persistence data on docker volumes. Let's try to translate this into the kubernetes world...
+
+First we need a deployment:
+```yaml
+kind:apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: story-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: story
+  template:
+    metadata:
+      labels:
+        app: story
+    spec:
+      containers:
+      - name: story
+        image: christianpress/kube-data-demo
+```
+and a service:
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: story-service
+spec:
+  selector:
+    app: story
+  ports:
+  - protocol: TCP
+    port: 3000
+    targetPort: 80
+```
+Know we create a repo at [docker hub](https://hub.docker.com) with the name `kube-data-demo` and build and push the image:
+```
+docker build -t christianpress/kube-data-demo .
+docker push christianpress/kube-data-demo
+```
+and deploy it to our kubernetes cluster:
+```
+kubectl apply -f deployment.yaml -f service.yaml
+```
+
