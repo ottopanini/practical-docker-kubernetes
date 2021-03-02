@@ -1468,4 +1468,6 @@ curl <minikube url>/error
 ```
 
 ### A First Volume: The "emptyDir" Type
+EmptyDir creates a volume when the pod starts but survives container restarts.  
+Downsides: Replicas > 1
 
