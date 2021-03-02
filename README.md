@@ -1435,8 +1435,8 @@ spec:
     app: story
   ports:
   - protocol: TCP
-    port: 3000
-    targetPort: 80
+    port: 80
+    targetPort: 3000
 ```
 Know we create a repo at [docker hub](https://hub.docker.com) with the name `kube-data-demo` and build and push the image:
 ```
@@ -1447,4 +1447,25 @@ and deploy it to our kubernetes cluster:
 ```
 kubectl apply -f deployment.yaml -f service.yaml
 ```
+For the later steps we add an additional endpoint to make the application exit (app.js):
+```javascript
+...
+app.get('/error', () => {
+  process.exit(1);
+});
+...
+```
+We build the image again and tag it with version 1:
+```
+docker build -t christianpress/kube-data-demo:1 .
+docker push christianpress/kube-data-demo:1
+```
+We can check the app is working with curl commands:
+```
+curl -X POST -H "Content-Type: application/json" -d '{"text": "foo"}' <minikube url>/story
+curl <minikube url>/story
+curl <minikube url>/error
+```
+
+### A First Volume: The "emptyDir" Type
 

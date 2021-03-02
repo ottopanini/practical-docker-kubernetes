@@ -14,4 +14,4 @@ spec:
     spec:
       containers:
       - name: story
-        image: christianpress/kube-data-demo
+        image: christianpress/kube-data-demo:1
