@@ -1602,4 +1602,31 @@ docker push <repo name>/kube-data-demo:2
 ```
 and apply the changed deployment with `kubectl apply -f deployment.yaml`
 
-
+### Environment Variables & ConfigMaps
+Environment variables can also be defined to be usable across different deployments using config maps. To define such a config map we create a file environment.yaml (name is free):
+```yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: data-store-env
+data:
+  folder: 'story'
+  ...
+  key: value
+```
+and apply this too
+```
+kubectl apply -f environment.yaml
+```
+Now we need to use this config map in our deployment:
+```yaml
+...
+        env:
+          - name: STORY_FOLDER
+            valueFrom: 
+              configMapKeyRef: 
+                name: data-store-env
+                key: folder
+...
+```
+and apply it again.
