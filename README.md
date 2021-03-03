@@ -1630,3 +1630,15 @@ Now we need to use this config map in our deployment:
 ...
 ```
 and apply it again.
+
+Cleanup:
+```
+kubectl delete -f deployment.yaml
+kubectl delete -f host-pvc.yaml
+kubectl delete -f host-pv.yaml
+kubectl delete -f environment.yaml
+kubectl delete -f service.yaml
+```
+
+
+
