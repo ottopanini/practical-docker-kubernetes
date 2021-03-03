@@ -1498,4 +1498,75 @@ Creates a shared volume on the host file system.
             path: /data
             type: DirectoryOrCreate
 ```
-`DirectoryOrCreate` creates the directory if not exists. 
+`DirectoryOrCreate` creates the directory if not exists.   
+*hostPath* works only in a 1 node environment like minikube.
+
+### From Volumes to Persistent Volumes
+**Persistent volumes** are *pod and node independent*. They are kind of an external environment of the nodes. **Peristent Volume Claims** are then used to connect Pods/Containers to the *Peristent Volumes*.
+```yaml
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: host-pv
+spec:
+  capacity:
+    storage: 1Gi
+  volumeMode: Filesystem
+  storageClassName: standard
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /data
+    type: DirectoryOrCreate
+```
+**volumeMode**: `Block` or `FileSystem`   
+**accessModes**:   
+`ReadWriteOnce` - Read and write by a single node.  
+`ReadOnlyMany` - Readonly by multiple nodes.  
+`ReadWriteMany` - Read and write by many nodes.  
+With 
+```
+kubectl get sc
+```
+we can get the storage class. Storage class allows administrators to have a more fine grained control over storage use. The result for minikube is `standard`.
+```yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: host-pvc
+spec:
+  volumeName: host-pv
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: standard
+  resources:
+    requests:
+      storage: 1Gi
+```
+and some changes to be done in the deployment:
+```yaml
+...
+      volumes:
+      - name: story-volume
+        persistentVolumeClaim:
+          claimName: host-pvc
+ ```
+Now let's apply the new volume settings:
+```
+kubectl apply -f host-pv.yaml
+kubectl apply -f host-pvc.yaml
+kubectl apply -f deployment.yaml
+```
+with
+```
+kubectl get pv
+```
+we can have a look at the newly generated persistent volume.
+![](pv-1.png)
+and with
+```
+kubectl get pvc
+```
+the created persistent volume claims can be listed.
+![](pvc-1.png)
+
