@@ -1570,3 +1570,36 @@ kubectl get pvc
 the created persistent volume claims can be listed.
 ![](pvc-1.png)
 
+### Using Environment Variables
+We have defined a 'story' folder to use in the app.js and we defined a path in the deployment to provide this folder. Wouldn't it be nice we could have it defined once with a environment variable and use that in both places? Here is how this works...  
+First we change the source code in app.js:
+```javascript
+...
+const filePath = path.join(__dirname, 'story', 'text.txt');
+...
+```
+to:
+```javascript
+...
+const filePath = path.join(__dirname, process.env.STORY_FOLDER, 'text.txt');
+...
+```
+and add the environment variable to the deployment:
+```yaml
+...
+      containers:
+        ...
+        image: christianpress/kube-data-demo:2
+        env:
+          - name: STORY_FOLDER
+            value: 'story'
+        ...
+```
+now we need to build the new version of the image
+```
+docker build -t <repo name>/kube-data-demo:2 .
+docker push <repo name>/kube-data-demo:2
+```
+and apply the changed deployment with `kubectl apply -f deployment.yaml`
+
+
