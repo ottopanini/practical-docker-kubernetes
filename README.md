@@ -1663,4 +1663,47 @@ curl -H "Authorization: Bearer abc" localhost:8000/tasks
 Tasks can be retrieved and new tasks can be stored with:
 ```
 curl -X POST -H "Authorization: Bearer abc" -H "Content-Type: application/json" -d '{"title": "a task", "text": "do this, do that"}' localhost:8000/tasks
+```
 
+### Creating a First Deployment
+First we need to comment out the axios calls in users-app.js and replace its result with a dummy value in line 26:
+```javascript
+    //const hashedPW = await axios.get('http://auth/hashed-password/' + password);
+    const hashedPW = 'dummy text';
+```
+and in line 57:
+```javascript
+  // const response = await axios.get(
+  //   'http://auth/token/' + hashedPassword + '/' + password
+  // );
+  const response = {status: 200, data: {token: 'abc'}};
+```
+just for now.  
+
+Now we create and push the docker image to the hub
+```
+docker build -t <hub account>/kube-demo-users .
+docker push <hub account>/kube-demo-users
+
+```
+The users deployment:
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: users-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: users
+  template:
+    metadata:
+      labels:
+        app: users
+    spec:
+      containers:
+        - name: users
+          image: <hub account>/kube-demo-users
+```
+and apply it to kubernetes.
