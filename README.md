@@ -1641,5 +1641,26 @@ kubectl delete -f service.yaml
 ```
 
 ## Kubernetes Networking [kube-network]
+General architecture:
+![](kube-network-1.png)
 
+The application can be started locally by `docker-compose up -d --build`.
+
+With
+```
+curl -X POST -H "Content-Type: application/json" -d '{"email": "test@test.com", "password": "testers"}' localhost:8080/login
+```
+we are able to get a login token
+```json
+{
+  "token": "abc"
+}
+```
+With
+```
+curl -H "Authorization: Bearer abc" localhost:8000/tasks 
+```
+Tasks can be retrieved and new tasks can be stored with:
+```
+curl -X POST -H "Authorization: Bearer abc" -H "Content-Type: application/json" -d '{"title": "a task", "text": "do this, do that"}' localhost:8000/tasks
 
