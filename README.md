@@ -1706,4 +1706,28 @@ spec:
         - name: users
           image: <hub account>/kube-demo-users
 ```
-and apply it to kubernetes.
+and apply it to kubernetes.  
+Create a users service:
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: users-service
+spec:
+  selector:
+    app: users
+  type: LoadBalancer
+  ports:
+  - port: 8080
+    targetPort: 8080
+    protocol: TCP
+```
+and apply it too.
+```
+kubectl apply -f kubernetes/users-service.yaml
+```
+Now we can run `minikube service users-service` and try the login:
+```
+curl -X POST -H "Content-Type: application/json" -d '{"email": "test@test.com", "password": "testers"}' http://127.0.0.1:35785/login
+```
