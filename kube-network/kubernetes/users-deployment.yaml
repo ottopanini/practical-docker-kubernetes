@@ -15,5 +15,8 @@ spec:
       containers:
         - name: users
           image: christianpress/kube-demo-users:latest
+          env: 
+            - name: AUTH_ADDRESS
+              value: localhost
         - name: auth
           image: christianpress/kube-demo-auth:latest

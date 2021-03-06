@@ -1731,3 +1731,31 @@ Now we can run `minikube service users-service` and try the login:
 ```
 curl -X POST -H "Content-Type: application/json" -d '{"email": "test@test.com", "password": "testers"}' http://127.0.0.1:35785/login
 ```
+### Multiple Containers in One Pod
+Now we can reactivate the previously out commented lines in users-app.js to establish real communications between pods. But this time we will use Environment variables to define the address of the auth endpoint.
+```javascript
+...
+const hashedPW = await axios.get(`http://${process.env.AUTH_ADDRESS}/hashed-password/` + password);
+...
+const response = await axios.get(
+    `http://${process.env.AUTH_ADDRESS}/token/` + hashedPassword + '/' + password
+  );
+```
+Build and push this new image (`docker build -t <hub account>/kube-demo-users .` and `docker push <hub account>/kube-demo-users`). The auth container should be deployed as second container inside the same pod as the users api. The containers section in the users-deployment must be changed:
+```yaml
+...
+      containers:
+        - name: users
+          image: <hub account>/kube-demo-users:latest
+          env: 
+          - name: AUTH_ADDRESS
+            value: localhost
+        - name: auth
+          image: <hub account>/kube-demo-auth:latest
+```
+Deploy the new deployment with `kubectl apply -f users-deplyment.yaml`and check the result:
+```
+curl -X POST -H "Content-Type: application/json" -d '{"email": "test@test.com", "password": "testers"}' http://127.0.0.1:38163/login
+```
+
+
