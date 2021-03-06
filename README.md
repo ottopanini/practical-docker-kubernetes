@@ -1889,7 +1889,13 @@ and run it
 ```
 docker run -d --rm --name frontend -p 80:80 <hub account>/kube-demo-frontend
 ```
-
+***
+To deploy images without having to use a remote registry you can use
+```
+eval $(minikube -p minikube docker-env)
+```
+After that just push the images as usual tagged and kubernetes will fetch it from the local docker env.
+***
 
 
 
