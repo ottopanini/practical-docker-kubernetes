@@ -1817,6 +1817,18 @@ These variables are automatically provided by kubernetes and follow always this 
 ```
 Now again the changes must be built into an image and pushed to the hub.
 
+### Using DNS for Pod-to-Pod Communication
+Kubernetes clusters by default come with a default service named CoreDNS. These are cluster internal domain name providers. We can use it in our users-deployment:
+```yaml
+         env: 
+          - name: AUTH_ADDRESS
+            value: "auth-service"
+```
+When communicating over namespace the namespace can be added
+```yaml
+            value: "<service-name>.<namespace>"
+```
+
 
 
 
