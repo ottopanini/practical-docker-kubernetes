@@ -1803,5 +1803,21 @@ apply it `kubectl apply -f kubernetes/auth-service.yaml -f kubernetes/auth-deplo
 ```
 finally apply the changes (`kubectl apply -f kubernetes/users-deployment.yaml`).
 
+Next improvement by using automatic environment variables kubernetes creates in js code.
+```javascript
+...
+const response = await axios.get(
+    `http://${process.env.AUTH_SERVICE_SERVICE_HOST}/token/` + hashedPassword + '/' + password
+  );
+...
+```
+These variables are automatically provided by kubernetes and follow always this pattern
+```
+<Snake Case Service Name>_SERVICE_HOST
+```
+Now again the changes must be built into an image and pushed to the hub.
+
+
+
 
 
