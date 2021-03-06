@@ -1757,5 +1757,51 @@ Deploy the new deployment with `kubectl apply -f users-deplyment.yaml`and check 
 ```
 curl -X POST -H "Content-Type: application/json" -d '{"email": "test@test.com", "password": "testers"}' http://127.0.0.1:38163/login
 ```
+### Creating Multiple Deployments
+First we change our general setup so that the auth container gets its own pod. 
+![](kube-network-2.png)
+create an auth-deployment:
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: auth
+  template:
+    metadata:
+      labels:
+        app: auth
+    spec:
+      containers:
+        - name: auth
+          image: <hub account>/kube-demo-auth:latest
+```
+and a service so that the new pod is reachable inside the cluster:
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: auth-service
+spec:
+  selector:
+    app: auth
+  type: ClusterIP
+  ports:
+  - port: 80
+    targetPort: 80
+```
+apply it `kubectl apply -f kubernetes/auth-service.yaml -f kubernetes/auth-deployment.yaml` and change the AUTH_ADDRESS in the users deployment environment... but first let's get the correct address by `kubectl get services` and use it:
+```yaml
+...
+          env: 
+            - name: AUTH_ADDRESS
+              value: "10.97.231.106"
+```
+finally apply the changes (`kubectl apply -f kubernetes/users-deployment.yaml`).
+
 
 
