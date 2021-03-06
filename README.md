@@ -1829,6 +1829,56 @@ When communicating over namespace the namespace can be added
             value: "<service-name>.<namespace>"
 ```
 
+### Add Tasks deployment and service 
+Code changes:
+```javascript
+...
+  const response = await axios.get(`http://${process.env.AUTH_ADDRESS}/verify-token/` + token);
+...
+```
+build the docker image and push it to the hub. Then add the deployment:
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tasks-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tasks
+  template:
+    metadata:
+      labels:
+        app: tasks
+    spec:
+      containers:
+      - name: tasks
+        image: <hub account>/kube-demo-tasks
+        env:
+          - name: TASKS_FOLDER
+            value: "tasks"
+          - name: AUTH_ADDRESS
+            value: auth-service
+```
+and the corresponding service:
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: tasks-service
+spec:
+  selector:
+    app: tasks
+  type: LoadBalancer
+  ports:
+  - port: 8000
+    targetPort: 8000
+    protocol: TCP
+```
+
+
+
 
 
 
