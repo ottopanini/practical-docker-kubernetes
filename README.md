@@ -1876,8 +1876,19 @@ spec:
     targetPort: 8000
     protocol: TCP
 ```
-
-
+### Adding a Containerized Frontend
+Some lines need to be changed to work with our deployed minkube services. Just copy the ip listed by `minikube service tasks-service` into frontend/App.js
+```javascript
+    fetch('http://192.168.49.2:31264/tasks', {
+```
+then build the image
+```
+docker build -t <hub account>/kube-demo-frontend .
+```
+and run it
+```
+docker run -d --rm --name frontend -p 80:80 <hub account>/kube-demo-frontend
+```
 
 
 
