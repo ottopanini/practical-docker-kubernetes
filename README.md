@@ -1896,6 +1896,42 @@ eval $(minikube -p minikube docker-env)
 ```
 After that just push the images as usual tagged and kubernetes will fetch it from the local docker env.
 ***
+### Deploying the Frontend with Kubernetes
+Add deployment:
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+      - name: frontend
+        image: christianpress/kube-demo-frontend
+```
+and service:
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-service
+spec:
+  selector:
+    app: frontend
+  type: LoadBalancer
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+```
 
 
 
