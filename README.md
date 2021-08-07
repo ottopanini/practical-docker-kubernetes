@@ -1932,7 +1932,24 @@ spec:
     port: 80
     targetPort: 80
 ```
+Don't forget to push the frontend image to the hub before applying service and deployment.  
 
+### Using a Reverse Proxy for the Frontend
+
+To modify the frontends nginx to proxy requests towards the tasks-api we add a little section to the nginx.cond:
+```
+...
+  location /api/ {
+    proxy_pass http://task-service/;
+  }
+...
+```
+With this the API calls in the frontends App.js can be rewritten
+``` javascript
+...
+    fetch('/api/tasks', {
+...
+``` 
 
 
 
