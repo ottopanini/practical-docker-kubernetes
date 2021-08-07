@@ -1,4 +1,101 @@
 # practical-docker-kubernetes
+
+[Getting Started](https://github.com/ottopanini/practical-docker-kubernetes#getting-started)  
+&nbsp;&nbsp;[first-demo-starting-setup](https://github.com/ottopanini/practical-docker-kubernetes#first-demo-starting-setup)  
+
+[Docker Images & Containers: The Core Building Blocks](https://github.com/ottopanini/practical-docker-kubernetes#docker-images--containers-the-core-building-blocks)  
+&nbsp;&nbsp;[My NodeJS App [nodejs-app]](https://github.com/ottopanini/practical-docker-kubernetes#my-nodejs-app-nodejs-app)  
+&nbsp;&nbsp;[Managing Images & Containers](https://github.com/ottopanini/practical-docker-kubernetes#managing-images--containers)  
+&nbsp;&nbsp;[Entering Interactive Mode [python-app]](https://github.com/ottopanini/practical-docker-kubernetes#entering-interactive-mode-python-app)  
+&nbsp;&nbsp;[Deleting Images & Containers](https://github.com/ottopanini/practical-docker-kubernetes#deleting-images--containers)  
+&nbsp;&nbsp;[A Look Behind the Scenes: Inspecting Images](https://github.com/ottopanini/practical-docker-kubernetes#a-look-behind-the-scenes-inspecting-images)  
+&nbsp;&nbsp;[Copying Files Into & From A Container](https://github.com/ottopanini/practical-docker-kubernetes#copying-files-into--from-a-container)  
+&nbsp;&nbsp;[Naming & Tagging Containers and Images](https://github.com/ottopanini/practical-docker-kubernetes#naming--tagging-containers-and-images)  
+&nbsp;&nbsp;[Sharing Images](https://github.com/ottopanini/practical-docker-kubernetes#sharing-images)  
+&nbsp;&nbsp;[Pulling & Using Shared Images](https://github.com/ottopanini/practical-docker-kubernetes#pulling--using-shared-images)  
+
+[Managing Data & Working with Volumes](https://github.com/ottopanini/practical-docker-kubernetes#managing-data--working-with-volumes)  
+&nbsp;&nbsp;[Analyzing a Real App [data-volumes]](https://github.com/ottopanini/practical-docker-kubernetes#analyzing-a-real-app-data-volumes)  
+&nbsp;&nbsp;[Introducing volumes](https://github.com/ottopanini/practical-docker-kubernetes#introducing-volumes)  
+&nbsp;&nbsp;[Getting Started With Bind Mounts (Code Sharing)](https://github.com/ottopanini/practical-docker-kubernetes#getting-started-with-bind-mounts-code-sharing)  
+&nbsp;&nbsp;[A Look at Read-Only Volumes](https://github.com/ottopanini/practical-docker-kubernetes#a-look-at-read-only-volumes)  
+&nbsp;&nbsp;[Managing Docker Volumes](https://github.com/ottopanini/practical-docker-kubernetes#managing-docker-volumes)  
+&nbsp;&nbsp;[Working with Environment Variables & ".env" Files](https://github.com/ottopanini/practical-docker-kubernetes#working-with-environment-variables--env-files)  
+&nbsp;&nbsp;[Using Build Arguments (ARG)](https://github.com/ottopanini/practical-docker-kubernetes#using-build-arguments-arg)  
+
+[Networking: (Cross-)Container Communication [networks]](https://github.com/ottopanini/practical-docker-kubernetes#networking-cross-container-communication-networks)  
+&nbsp;&nbsp;[Case 1: Container to WWW Communication](https://github.com/ottopanini/practical-docker-kubernetes#case-1-container-to-www-communication)  
+&nbsp;&nbsp;[Case 2: Container to Local Host Machine Communication](https://github.com/ottopanini/practical-docker-kubernetes#case-2-container-to-local-host-machine-communication)  
+&nbsp;&nbsp;[Case 3: Container to Container Communication](https://github.com/ottopanini/practical-docker-kubernetes#case-3-container-to-container-communication)  
+&nbsp;&nbsp;[Introducing Docker Networks: Elegant Container to Container Communication](https://github.com/ottopanini/practical-docker-kubernetes#introducing-docker-networks-elegant-container-to-container-communication)  
+
+[Building Multi-Container Applications with Docker [multi]](https://github.com/ottopanini/practical-docker-kubernetes#building-multi-container-applications-with-docker-multi)  
+&nbsp;&nbsp;[The Multi Demo App](https://github.com/ottopanini/practical-docker-kubernetes#the-multi-demo-app)  
+&nbsp;&nbsp;[Adding Docker Networks for Efficient Cross-Container Communication](https://github.com/ottopanini/practical-docker-kubernetes#adding-docker-networks-for-efficient-cross-container-communication)  
+&nbsp;&nbsp;[Adding Data Persistence to MongoDB with Volumes](https://github.com/ottopanini/practical-docker-kubernetes#adding-data-persistence-to-mongodb-with-volumes)  
+&nbsp;&nbsp;[Volumes, Bind Mounts & Polishing for the NodeJS Container](https://github.com/ottopanini/practical-docker-kubernetes#volumes-bind-mounts--polishing-for-the-nodejs-container)  
+&nbsp;&nbsp;[Live Source Code Updates for the React Container (with Bind Mounts)](https://github.com/ottopanini/practical-docker-kubernetes#live-source-code-updates-for-the-react-container-with-bind-mounts)  
+
+[Docker Compose: Elegant Multi-Container Orchestration](https://github.com/ottopanini/practical-docker-kubernetes#docker-compose-elegant-multi-container-orchestration)  
+&nbsp;&nbsp;[Creating a Compose File](https://github.com/ottopanini/practical-docker-kubernetes#creating-a-compose-file)  
+
+[Working with "Utility Containers" & Executing Commands In Containers](https://github.com/ottopanini/practical-docker-kubernetes#working-with-utility-containers--executing-commands-in-containers)  
+&nbsp;&nbsp;[Building a First Utility Container [utility]](https://github.com/ottopanini/practical-docker-kubernetes#building-a-first-utility-container-utility)  
+&nbsp;&nbsp;[Using Docker Compose](https://github.com/ottopanini/practical-docker-kubernetes#using-docker-compose)  
+
+[A More Complex Setup: A Laravel & PHP Dockerized Project [laravel]](https://github.com/ottopanini/practical-docker-kubernetes#a-more-complex-setup-a-laravel--php-dockerized-project-laravel)  
+&nbsp;&nbsp;[Adding a Nginx (Web Server) Container](https://github.com/ottopanini/practical-docker-kubernetes#adding-a-nginx-web-server-container)  
+&nbsp;&nbsp;[Adding a PHP Container](https://github.com/ottopanini/practical-docker-kubernetes#adding-a-php-container)  
+&nbsp;&nbsp;[Adding a MySQL Container](https://github.com/ottopanini/practical-docker-kubernetes#adding-a-mysql-container)  
+&nbsp;&nbsp;[Adding a Composer Utility Container](https://github.com/ottopanini/practical-docker-kubernetes#adding-a-composer-utility-container)  
+&nbsp;&nbsp;[Adding More Utility Containers](https://github.com/ottopanini/practical-docker-kubernetes#adding-more-utility-containers)  
+
+[Deploying Docker Containers](https://github.com/ottopanini/practical-docker-kubernetes#deploying-docker-containers)  
+&nbsp;&nbsp;[Getting Started With An Example](https://github.com/ottopanini/practical-docker-kubernetes#getting-started-with-an-example)  
+&nbsp;&nbsp;[Bind Mounts In Production](https://github.com/ottopanini/practical-docker-kubernetes#bind-mounts-in-production)  
+&nbsp;&nbsp;[Introducing AWS & EC2](https://github.com/ottopanini/practical-docker-kubernetes#introducing-aws--ec2)  
+&nbsp;&nbsp;[Pushing our local Image to the Cloud](https://github.com/ottopanini/practical-docker-kubernetes#pushing-our-local-image-to-the-cloud)  
+&nbsp;&nbsp;[Managing & Updating the Container / Image](https://github.com/ottopanini/practical-docker-kubernetes#managing--updating-the-container--image)  
+&nbsp;&nbsp;[From Manual Deployment to Managed Services](https://github.com/ottopanini/practical-docker-kubernetes#from-manual-deployment-to-managed-services)  
+&nbsp;&nbsp;[Creating a "build-only" Container](https://github.com/ottopanini/practical-docker-kubernetes#creating-a-build-only-container)  
+&nbsp;&nbsp;[Introducing Multi-Stage Builds](https://github.com/ottopanini/practical-docker-kubernetes#introducing-multi-stage-builds)  
+
+[**Kubernetes**](https://github.com/ottopanini/practical-docker-kubernetes#kubernetes)  
+[Getting Started with Kubernetes](https://github.com/ottopanini/practical-docker-kubernetes#getting-started-with-kubernetes)  
+&nbsp;&nbsp;[Core Concepts](https://github.com/ottopanini/practical-docker-kubernetes#core-concepts)  
+&nbsp;&nbsp;[A Closer Look at the Worker Nodes](https://github.com/ottopanini/practical-docker-kubernetes#a-closer-look-at-the-worker-nodes)  
+&nbsp;&nbsp;[A Closer Look at the Master Node](https://github.com/ottopanini/practical-docker-kubernetes#a-closer-look-at-the-master-node)  
+
+[Kubernetes in Action - Diving into the Core Concepts](https://github.com/ottopanini/practical-docker-kubernetes#kubernetes-in-action---diving-into-the-core-concepts)  
+&nbsp;&nbsp;[Understanding Kubernetes Objects (Resources)](https://github.com/ottopanini/practical-docker-kubernetes#understanding-kubernetes-objects-resources)  
+&nbsp;&nbsp;[A First Deployment - Using the Imperative Approach [kube-action]](https://github.com/ottopanini/practical-docker-kubernetes#a-first-deployment---using-the-imperative-approach-kube-action)  
+&nbsp;&nbsp;[The "Service" Object (Resource)](https://github.com/ottopanini/practical-docker-kubernetes#the-service-object-resource)  
+&nbsp;&nbsp;[Scaling in Action](https://github.com/ottopanini/practical-docker-kubernetes#scaling-in-action)  
+&nbsp;&nbsp;[Updating Deployments](https://github.com/ottopanini/practical-docker-kubernetes#updating-deployments)  
+&nbsp;&nbsp;[Deployment Rollbacks & History](https://github.com/ottopanini/practical-docker-kubernetes#deployment-rollbacks--history)  
+&nbsp;&nbsp;[Clean up](https://github.com/ottopanini/practical-docker-kubernetes#clean-up)  
+&nbsp;&nbsp;[Creating a Deployment Configuration File (Declarative Approach)](https://github.com/ottopanini/practical-docker-kubernetes#creating-a-deployment-configuration-file-declarative-approach)  
+&nbsp;&nbsp;[Creating a Service Declaratively](https://github.com/ottopanini/practical-docker-kubernetes#creating-a-service-declaratively)  
+&nbsp;&nbsp;[More on Labels & Selectors](https://github.com/ottopanini/practical-docker-kubernetes#more-on-labels--selectors)  
+&nbsp;&nbsp;[Liveness Probes](https://github.com/ottopanini/practical-docker-kubernetes#liveness-probes)  
+
+[Managing Data & Volumes with Kubernetes [kube-data]](https://github.com/ottopanini/practical-docker-kubernetes#managing-data--volumes-with-kubernetes-kube-data)  
+&nbsp;&nbsp;[A First Volume: The "emptyDir" Type](https://github.com/ottopanini/practical-docker-kubernetes#a-first-volume-the-emptydir-type)  
+&nbsp;&nbsp;[A Second Volume: The "hostPath" Type](https://github.com/ottopanini/practical-docker-kubernetes#a-second-volume-the-hostpath-type)  
+&nbsp;&nbsp;[From Volumes to Persistent Volumes](https://github.com/ottopanini/practical-docker-kubernetes#from-volumes-to-persistent-volumes)  
+&nbsp;&nbsp;[Using Environment Variables](https://github.com/ottopanini/practical-docker-kubernetes#using-environment-variables)  
+&nbsp;&nbsp;[Environment Variables & ConfigMaps](https://github.com/ottopanini/practical-docker-kubernetes#environment-variables--configmaps)  
+
+[Kubernetes Networking [kube-network]](https://github.com/ottopanini/practical-docker-kubernetes#kubernetes-networking-kube-network)  
+&nbsp;&nbsp;[Creating a First Deployment](https://github.com/ottopanini/practical-docker-kubernetes#creating-a-first-deployment)  
+&nbsp;&nbsp;[Multiple Containers in One Pod](https://github.com/ottopanini/practical-docker-kubernetes#multiple-containers-in-one-pod)  
+&nbsp;&nbsp;[Creating Multiple Deployments](https://github.com/ottopanini/practical-docker-kubernetes#creating-multiple-deployments)  
+&nbsp;&nbsp;[Using DNS for Pod-to-Pod Communication](https://github.com/ottopanini/practical-docker-kubernetes#using-dns-for-pod-to-pod-communication)  
+&nbsp;&nbsp;[Add Tasks deployment and service](https://github.com/ottopanini/practical-docker-kubernetes#add-tasks-deployment-and-service)  
+&nbsp;&nbsp;[Adding a Containerized Frontend](https://github.com/ottopanini/practical-docker-kubernetes#adding-a-containerized-frontend)  
+&nbsp;&nbsp;[Deploying the Frontend with Kubernetes](https://github.com/ottopanini/practical-docker-kubernetes#deploying-the-frontend-with-kubernetes)  
+&nbsp;&nbsp;[Using a Reverse Proxy for the Frontend](https://github.com/ottopanini/practical-docker-kubernetes#using-a-reverse-proxy-for-the-frontend)  
+
 ## Getting Started
 ### first-demo-starting-setup
 Runs simple node.js Server. Go into folder and type:
@@ -228,7 +325,7 @@ docker pull <dockerid>/<image>[:<tag>]
 
 docker pull mydockerid/node-hello-world:latest
 ```
-## 3: Managing Data & Working with Volumes
+## Managing Data & Working with Volumes
 - application data
     - stored in image
 - temporary app data
